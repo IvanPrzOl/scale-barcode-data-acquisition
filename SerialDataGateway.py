@@ -21,7 +21,7 @@ class SerialDataGateway(object):
 	Helper class for receiving lines from a serial port
 	'''
 
-	def __init__(self, port="/dev/ttyUSB0", baudrate=115200, lineHandler = _OnLineReceived):
+	def __init__(self, port="COM8", baudrate=9600,bytesSize = 8,stopBits = 1, lineHandler = _OnLineReceived):
 		'''
 		Initializes the receiver class. 
 		port: The serial port to listen to.
@@ -29,19 +29,24 @@ class SerialDataGateway(object):
 		'''
 		self._Port = port
 		self._Baudrate = baudrate
-		self.ReceivedLineHandler = lineHandler
+		self._BytesSize = bytesSize
+		self._StopBits = stopBits
+		self._ReceivedLineHandler = lineHandler
 		self._KeepRunning = False
+		self._bytesReceived = 0
 
 	def Start(self):
-		self._Serial = serial.Serial(port = self._Port, baudrate = self._Baudrate, timeout = 1)
-
-		self._KeepRunning = True
-		self._ReceiverThread = threading.Thread(target=self._Listen)
-		self._ReceiverThread.setDaemon(True)
-		self._ReceiverThread.start()
+		try:
+			self._Serial = serial.Serial(port = self._Port, baudrate = self._Baudrate, bytesize = self._BytesSize,stopbits = self._StopBits, timeout = 1)
+			self._KeepRunning = True
+			self._ReceiverThread = threading.Thread(target=self._Listen)
+			self._ReceiverThread.setDaemon(True)
+			self._ReceiverThread.start()
+		except:
+			print("Port not found")
 
 	def Stop(self):
-		rospy.loginfo("Stopping serial gateway")
+		print("Stopping serial gateway")
 		self._KeepRunning = False
 		time.sleep(.1)
 		self._Serial.close()
@@ -50,23 +55,29 @@ class SerialDataGateway(object):
 		stringIO = StringIO()
 		while self._KeepRunning:
 			data = self._Serial.read()
-			if data == '\r':
-				pass
-			if data == '\n':
-				self.ReceivedLineHandler(stringIO.getvalue())
+			data = data.decode("ASCII")
+			if data == '\r' or data == '':
+				continue
+			if data == '\n' and self._bytesReceived > 0:
+				self._ReceivedLineHandler(stringIO.getvalue())
+				stringIO.close()
+				stringIO = StringIO()
+				self._bytesReceived = 0
+			if data == '\n' and self._bytesReceived == 0:
 				stringIO.close()
 				stringIO = StringIO()
 			else:
 				stringIO.write(data)
+				self._bytesReceived += 1
 
 	def Write(self, data):
 		info = "Writing to serial port: %s" %data
-		rospy.loginfo(info)
+		print(info)
 		self._Serial.write(data)
 
 	if __name__ == '__main__':
-		dataReceiver = SerialDataGateway("/dev/ttyUSB0",  115200)
+		dataReceiver = SerialDataGateway("COM21",  9600)
 		dataReceiver.Start()
-
-		raw_input("Hit <Enter> to end.")
+		input("Hit <Enter> to end.")
 		dataReceiver.Stop()
+		print("Execution stopped")
