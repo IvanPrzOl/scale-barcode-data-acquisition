@@ -65,10 +65,11 @@ class SerialDataGateway(object):
 			print("Port not found")
 
 	def Stop(self):
-		print("Stopping serial gateway")
-		self._KeepRunning = False
-		time.sleep(.1)
-		self._Serial.close()
+		if self._KeepRunning:
+			self._KeepRunning = False
+			time.sleep(.1)
+			self._Serial.close()
+			print("Port closed")
 
 	def _Listen(self):
 		stringIO = StringIO()
