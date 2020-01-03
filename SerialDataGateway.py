@@ -94,9 +94,9 @@ class SerialDataGateway(object):
 		print(info)
 		self._Serial.write(data)
 
-	if __name__ == '__main__':
-		dataReceiver = SerialDataGateway("COM21",  9600)
-		dataReceiver.Start()
-		input("Hit <Enter> to end.")
-		dataReceiver.Stop()
-		print("Execution stopped")
+if __name__ == '__main__':
+	dataReceiver = SerialDataGateway("COM21",  9600)
+	dataReceiver.Start()
+	input("Hit <Enter> to end.")
+	dataReceiver.Stop()
+	print("Execution stopped")
