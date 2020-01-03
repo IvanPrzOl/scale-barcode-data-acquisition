@@ -12,9 +12,28 @@ from io import StringIO
 import time
 import re
 
+def LookForDevices(devices):
+	scaleDevice = None
+	scannerDevice = None 
+	ports = list_ports.comports()
+	
+	# look for scale
+	for k in devices["Scale"].keys():
+		for c in ports:
+			if re.findall(k,c.hwid):
+				scaleDevice = ("Scale,{},{}".format(c.device,k))
+				break
+
+	#look for scanner
+	for k in devices["Scanner"].keys():
+		for c in ports:
+			if re.findall(k,c.hwid):
+				scannerDevice = ("Scanner,{},{}".format(c.device,k))
+				break
+	return( (scaleDevice,scannerDevice) )
+
 def _OnLineReceived(line):
 	print(line)
-
 
 class SerialDataGateway(object):
 	'''
