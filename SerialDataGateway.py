@@ -1,9 +1,10 @@
-#!/usr/bin/env python
 '''
 Created on November 20, 2010
-
 @author: Dr. Rainer Hessmer
+
+Modified by Ivan Perez Olivera (ivan.perezolivera@hotmail.com) to find the COM port automatically given a dictionary of devices
 '''
+
 import threading
 import serial
 from cStringIO import StringIO
