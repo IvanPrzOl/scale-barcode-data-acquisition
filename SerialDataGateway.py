@@ -7,9 +7,10 @@ Modified by Ivan Perez Olivera (ivan.perezolivera@hotmail.com) to find the COM p
 
 import threading
 import serial
-from cStringIO import StringIO
+from serial.tools import list_ports
+from io import StringIO
 import time
-import rospy
+import re
 
 def _OnLineReceived(line):
 	print(line)
