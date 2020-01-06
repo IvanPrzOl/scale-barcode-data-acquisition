@@ -53,7 +53,7 @@ class mainApp:
         self.wind = window
         self.wind.title('Scale data collector')
 
-        self._devicesFile = "C:/Users/IPOLIVERA/Documents/scripts-io-files/devices.json"
+        self._devicesFile = "devices.json"
         self._devicesDict = None
         self._Status = False #Connection status
         self._CurrentPlotnum = None
