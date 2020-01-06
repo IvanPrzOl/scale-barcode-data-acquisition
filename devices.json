@@ -1,0 +1,8 @@
+{
+       "Scanner":{"05E0:1701":{"name":"Scanner","baud":9600,"bits":8,"stopBits":1}},
+       "Scale":{"2341:0043":{"name":"Arduino","baud":9600,"bits":8,"stopBits":1},
+                "1A86:7523":{"name":"CH430","baud":38400,"bits":8,"stopBits":1},
+                "067B:2303":{"name":"Ranger3000","baud":9600,"bits":8,"stopBits":1},
+                "0409:6001":{"name":"Scout Pro","baud":2400,"bits":7,"stopBits":2}
+                }
+}
