@@ -5,6 +5,7 @@ import numpy as np
 import SerialDataGateway
 import json
 import re
+import os
 
 class excelBridge:
     def __init__(self,wsheet):
@@ -66,9 +67,9 @@ class mainApp:
         self._ScannerGateway = None
 
         #Excel and COM ports finder conectionFrame container
-        conectionFrame = LabelFrame(self.wind, text = "Taget file and devices")
+        conectionFrame = LabelFrame(self.wind, text = "Archivo de destino y equipos")
         conectionFrame.grid(row = 0, column = 0, pady = 5, padx = 10) 
-        statusFrame  = LabelFrame(self.wind, text = "Data status")
+        statusFrame  = LabelFrame(self.wind, text = "Estatus")
         statusFrame.grid(row = 1, column = 0, pady = 5, padx = 10) 
 
         #Excel files opened combobox
@@ -80,19 +81,22 @@ class mainApp:
         self._entryValue = StringVar()
 
         #self._cOpenedFiles.trace('w',self.ConnectToWorksheet)
-        self.combo = ttk.Combobox(conectionFrame,textvariable = self._cOpenedFiles,width = 45)
-        self.combo.grid(row = 0, column = 0,sticky = W+E)
+        Label(conectionFrame,text = "Archivo").grid(row=0,column=0)
+        Label(conectionFrame,text = "Balanza").grid(row=1,column=0)
+        Label(conectionFrame,text = "Scanner").grid(row=2,column=0)
+        self.combo = ttk.Combobox(conectionFrame,textvariable = self._cOpenedFiles,width = 44)
+        self.combo.grid(row = 0, column = 1,sticky = W+E)
         self._ScaleTxEntry = ttk.Entry(conectionFrame,textvariable = self._entryScale)
-        self._ScaleTxEntry.grid(row = 1, column = 0,sticky = W+E)
+        self._ScaleTxEntry.grid(row = 1, column = 1,sticky = W)
         self._ScannerTxEntry = ttk.Entry(conectionFrame,textvariable = self._entryScanner)
-        self._ScannerTxEntry.grid(row = 2, column = 0,sticky = W+E)
+        self._ScannerTxEntry.grid(row = 2, column = 1,sticky = W)
         #Button to refresh the files list
         
         #ttk.Button(conectionFrame, text = 'Connect Scale').grid(row = 1,column = 1,sticky = W+E,columnspan = 2)
         #ttk.Button(conectionFrame, text = 'Connect Scanner').grid(row = 2,column = 2,sticky = W+E)
 
         Label(statusFrame,text = 'Variable').grid(row=0,column =0)
-        self._VariableCombo = ttk.Combobox(statusFrame,textvariable = self._cVariableList,width = 35)
+        self._VariableCombo = ttk.Combobox(statusFrame,textvariable = self._cVariableList,width = 40)
         self._VariableCombo.grid(row =0,column = 1, sticky = W+E)
         self._VariableCombo.bind("<<ComboboxSelected>>",self._SelectCell)
 
@@ -127,7 +131,7 @@ class mainApp:
         if len(openedFiles) >= 1:
             self._cOpenedFiles.set(openedFiles[0])
         #Refresh the list of devices if nothing is connected
-        if not self._Status:
+        if not self._Status and os.path.exists("devices.json"):
             with open(self._devicesFile) as devf:
                 self._devicesDict = json.load(devf)
                 entryScale,entryScanner = SerialDataGateway.LookForDevices(self._devicesDict)
