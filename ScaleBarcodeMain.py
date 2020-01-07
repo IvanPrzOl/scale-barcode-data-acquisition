@@ -133,7 +133,7 @@ class mainApp:
             self._entryScanner.set(entryScanner)
 
     def scaleLineHandler(self,line):
-        self._CurrentScaleValue = "".join(re.findall('\d*\.\d*',line))
+        self._CurrentScaleValue = "".join(re.findall('\d*\.*\d*',line))
         self._entryValue.set(self._CurrentScaleValue)
         #self._ValueEntry.delete(0,END)
         #self._ValueEntry.insert(0,self._CurrentScaleValue)
