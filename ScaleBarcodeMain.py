@@ -52,6 +52,7 @@ class mainApp:
     def __init__(self,window):
         self.wind = window
         self.wind.title('Scale data collector')
+        self.wind.resizable(0,0)
 
         self._devicesFile = "devices.json"
         self._devicesDict = None
@@ -65,9 +66,9 @@ class mainApp:
 
         #Excel and COM ports finder conectionFrame container
         conectionFrame = LabelFrame(self.wind, text = "Taget file and devices")
-        conectionFrame.grid(row = 0, column = 0, pady = 5) 
+        conectionFrame.grid(row = 0, column = 0, pady = 5, padx = 10) 
         statusFrame  = LabelFrame(self.wind, text = "Data status")
-        statusFrame.grid(row = 1, column = 0, pady = 5) 
+        statusFrame.grid(row = 1, column = 0, pady = 5, padx = 10) 
 
         #Excel files opened combobox
         self._cOpenedFiles = StringVar()
@@ -78,17 +79,16 @@ class mainApp:
         self._entryValue = StringVar()
 
         #self._cOpenedFiles.trace('w',self.ConnectToWorksheet)
-        self.combo = ttk.Combobox(conectionFrame,textvariable = self._cOpenedFiles,width = 30)
+        self.combo = ttk.Combobox(conectionFrame,textvariable = self._cOpenedFiles,width = 45)
         self.combo.grid(row = 0, column = 0,sticky = W+E)
         self._ScaleTxEntry = ttk.Entry(conectionFrame,textvariable = self._entryScale)
         self._ScaleTxEntry.grid(row = 1, column = 0,sticky = W+E)
         self._ScannerTxEntry = ttk.Entry(conectionFrame,textvariable = self._entryScanner)
         self._ScannerTxEntry.grid(row = 2, column = 0,sticky = W+E)
         #Button to refresh the files list
-        ttk.Button(conectionFrame, text = 'Refresh List', command = self.RefreshFilesList).grid(row = 0,column = 2,sticky = W+E)
         
-        ttk.Button(conectionFrame, text = 'Connect Scale').grid(row = 1,column = 1,sticky = W+E,columnspan = 2)
-        ttk.Button(conectionFrame, text = 'Connect Scanner').grid(row = 2,column = 2,sticky = W+E)
+        #ttk.Button(conectionFrame, text = 'Connect Scale').grid(row = 1,column = 1,sticky = W+E,columnspan = 2)
+        #ttk.Button(conectionFrame, text = 'Connect Scanner').grid(row = 2,column = 2,sticky = W+E)
 
         Label(statusFrame,text = 'Plot').grid(row=0,column =0)
         self._PlotEntry = ttk.Entry(statusFrame,textvariable = self._entryPlot)
@@ -98,7 +98,7 @@ class mainApp:
 
         Label(statusFrame,text = 'Variable').grid(row=1,column =0)
         self._VariableCombo = ttk.Combobox(statusFrame,textvariable = self._cVariableList,width = 17)
-        self._VariableCombo.grid(row =1,column = 1)
+        self._VariableCombo.grid(row =1,column = 1, sticky = W+E)
         self._VariableCombo.bind("<<ComboboxSelected>>",self._SelectCell)
 
         Label(statusFrame,text = 'Value').grid(row=2,column =0)
@@ -106,9 +106,10 @@ class mainApp:
         self._ValueEntry.grid(row =2,column = 1)
         self._entryValue.trace('w',self._WriteToWs)
 
-        ttk.Button(statusFrame,text = 'SendValue').grid(row = 3, column = 1)
+        #ttk.Button(statusFrame,text = 'SendValue').grid(row = 3, column = 1)
         self._connectBttn = ttk.Button(statusFrame,text = 'Connect', command = self.ConnectToWorksheet)
         self._connectBttn.grid(row = 3, column = 0)
+        ttk.Button(statusFrame, text = 'Refresh List', command = self.RefreshFilesList).grid(row = 3,column = 1 ,sticky = W+E)
 
     def RefreshFilesList(self):
         """
