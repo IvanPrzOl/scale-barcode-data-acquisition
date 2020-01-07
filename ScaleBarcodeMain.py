@@ -38,6 +38,7 @@ class excelBridge:
                 print("Plot no encontrado")
                 self._selectedRange = None
                 self._originRange.select()
+                return
         if self.currentVariable != "":
             self._SelectedCell["col"] = self._variableNamesdictionary[self.currentVariable]
             self._selectedRange = self._currentWorksheet.range((self._SelectedCell['row'],self._SelectedCell['col']))
