@@ -24,10 +24,6 @@ class excelBridge:
                 variablenamesRange = self._currentWorksheet.range(self._originRange,lastUsedColumn)
                 variableColumns = np.array(range(0,variablenamesRange.count)) + variablenamesRange.column
                 self._variableNamesdictionary = {k:v for k,v in zip(variablenamesRange.value,variableColumns) if k is not None}
-                #self._variableNamesdictionary = dict([(x.value,x.column) for x in variablenamesRange if x.value is not None])
-                plotRows = np.array( range(0,self._originRange.expand('down').count) ) + self._originRange.row
-                self._plotRowDict = {str(k):v for k,v in zip(self._originRange.expand('down').options(numbers = int).value,plotRows)}
-                #self._plotRowDict = dict([(str(x.options(numbers = int).value),x.row) for x in self._originRange.expand('down')])
                 self._SelectedCell['row'] = variablenamesRange.row
                 return(list(self._variableNamesdictionary.keys()))
         else:
@@ -35,12 +31,13 @@ class excelBridge:
     def setFocus(self):
         if self.currentPlot != "":
             try:
+                plotRows = np.array( range(0,self._originRange.expand('down').count) ) + self._originRange.row
+                self._plotRowDict = {str(k):v for k,v in zip(self._originRange.expand('down').options(numbers = int).value,plotRows)}
                 self._SelectedCell['row'] = self._plotRowDict[self.currentPlot]
             except:
-                print("Plot not Found")
+                print("Plot no encontrado")
                 self._selectedRange = None
                 self._originRange.select()
-                #self._plotRowDict = dict([(str(x.options(numbers = int).value),x.row) for x in self._originRange.expand('down')])
         if self.currentVariable != "":
             self._SelectedCell["col"] = self._variableNamesdictionary[self.currentVariable]
             self._selectedRange = self._currentWorksheet.range((self._SelectedCell['row'],self._SelectedCell['col']))
