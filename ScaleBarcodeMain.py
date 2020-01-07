@@ -97,19 +97,19 @@ class mainApp:
 
         Label(statusFrame,text = 'Plot').grid(row=1,column =0)
         self._PlotEntry = ttk.Entry(statusFrame,textvariable = self._entryPlot)
-        self._PlotEntry.grid(row =1,column = 1)
+        self._PlotEntry.grid(row =1,column = 1,sticky = W)
         self._PlotEntry.bind("<Return>",self._SelectCell)
         self._entryPlot.trace('w',self._SelectCell)
 
         Label(statusFrame,text = 'Value').grid(row=2,column =0)
         self._ValueEntry = ttk.Entry(statusFrame, textvariable = self._entryValue)
-        self._ValueEntry.grid(row =2,column = 1)
+        self._ValueEntry.grid(row =2,column = 1,sticky = W)
         self._entryValue.trace('w',self._WriteToWs)
 
         #ttk.Button(statusFrame,text = 'SendValue').grid(row = 3, column = 1)
         self._connectBttn = ttk.Button(statusFrame,text = 'Connect', command = self.ConnectToWorksheet)
         self._connectBttn.grid(row = 3, column = 0)
-        ttk.Button(statusFrame, text = 'Refresh List', command = self.RefreshFilesList).grid(row = 3,column = 1 ,sticky = W+E)
+        ttk.Button(statusFrame, text = 'Refresh List', command = self.RefreshFilesList).grid(row = 3,column = 1 ,sticky = E)
 
     def RefreshFilesList(self):
         """
