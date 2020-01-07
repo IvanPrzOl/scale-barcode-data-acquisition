@@ -90,16 +90,16 @@ class mainApp:
         #ttk.Button(conectionFrame, text = 'Connect Scale').grid(row = 1,column = 1,sticky = W+E,columnspan = 2)
         #ttk.Button(conectionFrame, text = 'Connect Scanner').grid(row = 2,column = 2,sticky = W+E)
 
-        Label(statusFrame,text = 'Plot').grid(row=0,column =0)
+        Label(statusFrame,text = 'Variable').grid(row=0,column =0)
+        self._VariableCombo = ttk.Combobox(statusFrame,textvariable = self._cVariableList,width = 35)
+        self._VariableCombo.grid(row =0,column = 1, sticky = W+E)
+        self._VariableCombo.bind("<<ComboboxSelected>>",self._SelectCell)
+
+        Label(statusFrame,text = 'Plot').grid(row=1,column =0)
         self._PlotEntry = ttk.Entry(statusFrame,textvariable = self._entryPlot)
-        self._PlotEntry.grid(row =0,column = 1)
+        self._PlotEntry.grid(row =1,column = 1)
         self._PlotEntry.bind("<Return>",self._SelectCell)
         self._entryPlot.trace('w',self._SelectCell)
-
-        Label(statusFrame,text = 'Variable').grid(row=1,column =0)
-        self._VariableCombo = ttk.Combobox(statusFrame,textvariable = self._cVariableList,width = 17)
-        self._VariableCombo.grid(row =1,column = 1, sticky = W+E)
-        self._VariableCombo.bind("<<ComboboxSelected>>",self._SelectCell)
 
         Label(statusFrame,text = 'Value').grid(row=2,column =0)
         self._ValueEntry = ttk.Entry(statusFrame, textvariable = self._entryValue)
