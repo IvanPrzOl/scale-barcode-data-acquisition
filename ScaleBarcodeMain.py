@@ -67,9 +67,9 @@ class mainApp:
         self._ScannerGateway = None
 
         #Excel and COM ports finder conectionFrame container
-        conectionFrame = LabelFrame(self.wind, text = "Archivo de destino y equipos")
+        conectionFrame = LabelFrame(self.wind, text = "Archivo de destino y dispositivos")
         conectionFrame.grid(row = 0, column = 0, pady = 5, padx = 10) 
-        statusFrame  = LabelFrame(self.wind, text = "Estatus")
+        statusFrame  = LabelFrame(self.wind, text = "Estado de plot y variables")
         statusFrame.grid(row = 1, column = 0, pady = 5, padx = 10) 
 
         #Excel files opened combobox
@@ -83,7 +83,7 @@ class mainApp:
         #self._cOpenedFiles.trace('w',self.ConnectToWorksheet)
         Label(conectionFrame,text = "Archivo").grid(row=0,column=0)
         Label(conectionFrame,text = "Balanza").grid(row=1,column=0)
-        Label(conectionFrame,text = "Scanner").grid(row=2,column=0)
+        Label(conectionFrame,text = "Escaner").grid(row=2,column=0)
         self.combo = ttk.Combobox(conectionFrame,textvariable = self._cOpenedFiles,width = 44)
         self.combo.grid(row = 0, column = 1,sticky = W+E)
         self._ScaleTxEntry = ttk.Entry(conectionFrame,textvariable = self._entryScale)
@@ -112,9 +112,9 @@ class mainApp:
         self._entryValue.trace('w',self._WriteToWs)
 
         #ttk.Button(statusFrame,text = 'SendValue').grid(row = 3, column = 1)
-        self._connectBttn = ttk.Button(statusFrame,text = 'Connect', command = self.ConnectToWorksheet)
+        self._connectBttn = ttk.Button(statusFrame,text = 'Conectar', command = self.ConnectToWorksheet)
         self._connectBttn.grid(row = 3, column = 0)
-        ttk.Button(statusFrame, text = 'Refresh List', command = self.RefreshFilesList).grid(row = 3,column = 1 ,sticky = E)
+        ttk.Button(statusFrame, text = 'Actualizar lista', command = self.RefreshFilesList).grid(row = 3,column = 1 ,sticky = E)
 
     def RefreshFilesList(self):
         """
@@ -181,7 +181,7 @@ class mainApp:
                 self._VariableCombo['values'] = self._CurrentWB.setupColumns()
             except:
                 pass
-            self._connectBttn.config(text = 'Disconnect')
+            self._connectBttn.config(text = 'Desconectar')
         else:
             self._ScaleTxEntry.config(state = NORMAL)
             self._ScannerTxEntry.config(state = NORMAL)
@@ -190,7 +190,7 @@ class mainApp:
                 self._ScaleGateway.Stop()
             if self._ScannerGateway is not None:
                 self._ScannerGateway.Stop()
-            self._connectBttn.config(text = 'Connect')
+            self._connectBttn.config(text = 'Conectar')
             self._entryPlot.set("")
             self._entryValue.set("")
             self._VariableCombo['values'] = []
