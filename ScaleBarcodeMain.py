@@ -146,7 +146,7 @@ class mainApp:
         print(line)
         
     def scannerLineHandler(self,line):
-        self._CurrentPlotnum = line.split("_")[-2]
+        self._CurrentPlotnum = line.split("_")[-3]
         self._entryPlot.set(self._CurrentPlotnum)
         #self._PlotEntry.delete(0,END)
         #self._PlotEntry.insert(0,self._CurrentPlotnum)
